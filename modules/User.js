@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
+const jwt = require("jsonwebtoken");
 
 // user schema
 
@@ -46,8 +47,13 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// userSchema is class i can add method to this class and i add generate token
+userSchema.methods.generatetoken = function () {
+  return jwt.sign({ id: this._id, admin: this.admin }, process.env.JWT_TOKEN, {
+    expiresIn: "4h",
+  });
+};
 const User = mongoose.model("User", userSchema);
-
 // new validate register
 const userregistervalidate = (obj) => {
   const Schema = Joi.object({
@@ -87,3 +93,6 @@ module.exports = {
   userloginvalidate,
   userupdatevalidate,
 };
+
+// insertmany(array) => you can using this to add multi informatione or big data in data base you can serch it if you want
+// deletemany() => you can use it if i want to delete data

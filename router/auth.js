@@ -50,14 +50,7 @@ userss.post(
       data: req.body.data,
     });
     const newuser = await user.save();
-    const token = jwt.sign(
-      { id: user._id, admin: user.admin },
-      process.env.JWT_TOKEN,
-      {
-        // the token expire in 4 hour
-        expiresIn: "4h",
-      }
-    );
+    const token = user.generatetoken();
     // send other data but dont send password with
     const { password, ...other } = newuser._doc;
     res.status(201).json({ other, token });
@@ -95,14 +88,8 @@ userss.post(
         message: `this password ${req.body.email} is not allowed`,
       });
     }
-    const token = jwt.sign(
-      { id: user._id, admin: user.admin },
-      process.env.JWT_TOKEN,
-      {
-        expiresIn: "4h",
-      }
-    );
-    
+    const token = user.generatetoken();
+
     // send other data but dont send password with
     const { password, ...other } = user._doc;
     res.status(201).json({ other, token });
