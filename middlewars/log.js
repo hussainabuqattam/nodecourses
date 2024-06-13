@@ -19,6 +19,7 @@ const notFound = (req, res, next) => {
 };
 
 // General error handling middleware
+// error handler middleware => type 4 middleware
 const errorHandler = (err, req, res, next) => {
   // Determining the status code based on the error or defaulting to 500
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;

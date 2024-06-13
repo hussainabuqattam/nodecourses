@@ -32,6 +32,8 @@ const verifytokeadmin = (req, res, next) => {
   verifytoken(req, res, () => {
     // verifytoken
     if (req.user.admin) {
+      next();
+    } else {
       return res.status(403).json({ message: "you cant updated in admin" });
     }
   });

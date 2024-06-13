@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
+// use this library to get more strong password
+const passwordComplexity = require("joi-password-complexity");
 
 // user schema
 
@@ -37,7 +39,6 @@ const userSchema = new mongoose.Schema(
     data: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Data",
-      required: true,
     },
     admin: {
       type: Boolean,
@@ -61,7 +62,7 @@ const userregistervalidate = (obj) => {
     name: Joi.string().min(3).max(15).required().trim(),
     lastname: Joi.string().min(3).max(15).required().trim(),
     password: Joi.string().min(6).required().trim(),
-    data: Joi.string().required(),
+    data: Joi.string(),
     admin: Joi.bool(),
   });
   return Schema.validate(obj);
@@ -87,11 +88,19 @@ const userupdatevalidate = (obj) => {
   return Schema.validate(obj);
 };
 
+// passwordvalidate
+const passwordvalidate = (obj) => {
+  const Schema = Joi.object({
+    password: passwordComplexity().required(),
+  });
+  return Schema.validate(obj);
+};
 module.exports = {
   User,
   userregistervalidate,
   userloginvalidate,
   userupdatevalidate,
+  passwordvalidate,
 };
 
 // insertmany(array) => you can using this to add multi informatione or big data in data base you can serch it if you want

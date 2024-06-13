@@ -25,6 +25,27 @@ route.get(
 );
 
 /*****
+ * @desc pagination route
+ * @method get
+ * @route  /hussain/information/page
+ * @access public
+ */
+route.get(
+  "/page",
+  asynchandler(async (req, res) => {
+    const { pagenumber } = req.query;
+    const { datalimit } = req.query;
+
+    // skip => It is the number of data that he will jump from. For example, I set a process, which is if, for example, the page number is 1, then 1-1 will equal 0, so he will not jump and will start from the beginning.
+    // limit => We specify the number of data that will be displayed and received from the client
+    const AllData = await Datauser.find()
+      .skip((pagenumber - 1) * datalimit)
+      .limit(datalimit);
+    res.json(AllData);
+  })
+);
+
+/*****
  * @desc get user in name
  * @method get
  * @route  /hussain/information

@@ -33,7 +33,7 @@ const DataSchema = new mongoose.Schema({
   },
   exam: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: "Exam",
   },
 },{timestamps:true});
